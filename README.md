@@ -1,5 +1,5 @@
 # moodle-attedance
-Python program which automatically submit attendances to moodle.
+Python program which automatically submit attendances to moodle using requests and BeautifulSoup.
 
 ## Prerequisites
 Make sure you have installed all of the following prerequisites on your machine:
