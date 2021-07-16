@@ -11,16 +11,16 @@ login_data = {
 
 print('logging in...')
 s = r.Session()
-res = s.get('https://moodle.mec.ac.in/login/index.php')
+res = s.get('https://' + domain + '/login/index.php')
 soup = BeautifulSoup(res.content, 'html5lib')
 login_data['logintoken'] = soup.find('input', attrs={'name': 'logintoken'})['value']
-res = s.post('https://moodle.mec.ac.in/login/index.php', data=login_data)
+res = s.post(domain + '/login/index.php', data=login_data)
 if res.status_code==200:
     print("login successful :)\n")
     data_count=0
     while(True):
         #finding available attendances
-        res = s.get('https://moodle.mec.ac.in/calendar/view.php?view=day')
+        res = s.get('https://' + domain + '/calendar/view.php?view=day')
         soup = BeautifulSoup(res.content, 'html5lib')
         l = soup.find_all('div', attrs={'data-type':'event'})
         count=0
@@ -30,10 +30,10 @@ if res.status_code==200:
             x = BeautifulSoup(i, 'html5lib')
             sub = {}
             link = x.find('a',attrs={'class':'card-link'})['href']
-            if link.startswith('https://moodle.mec.ac.in/mod/attendance/view.php?id='):
+            if link.startswith('https://' + domain + '/mod/attendance/view.php?id='):
                 sub['link'] = link
                 for j in x.find_all('a'):
-                    if j['href'].startswith('https://moodle.mec.ac.in/course/view.php?id='):
+                    if j['href'].startswith('https://' + domain + '/course/view.php?id='):
                         sub['name'] = j.text
                 for j in x.find_all('div',attrs={'class': 'col-xs-11'}):
                     if j.text.startswith('Today'):
@@ -68,13 +68,13 @@ if res.status_code==200:
                     soup = BeautifulSoup(res.content, 'html5lib')
                     for j in soup.find_all('a'):
                         try:
-                            if j['href'].startswith('https://moodle.mec.ac.in/mod/attendance/attendance.php?sessid='):
+                            if j['href'].startswith('https://' + domain + '/mod/attendance/attendance.php?sessid='):
                                 x = s.get(j['href'])
                                 x = BeautifulSoup(x.content, 'html5lib')
                                 att_data['status'] = x.find('input', attrs={'name' : 'status'})['value']
                                 att_data['sessid'],att_data['sesskey'] = j['href'].split('sessid=')[1].split('&sesskey=')
                                 #print(att_data)
-                                res = s.post('https://moodle.mec.ac.in/mod/attendance/attendance.php', data=att_data)
+                                res = s.post('https://' + domain + '/mod/attendance/attendance.php', data=att_data)
                                 if(res.status_code==200):
                                     print('Submitted attendance of '+ i['name']+'.\n')
                                 else:
@@ -83,3 +83,5 @@ if res.status_code==200:
                             pass
 
         time.sleep(200)
+else:
+    print('login failed :(')
