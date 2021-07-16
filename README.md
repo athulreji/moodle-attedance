@@ -17,13 +17,13 @@ There are two ways to download the code:
 The recommended way to get thecode is to use git to directly clone the moodle-attendance repository:
 
 ```bash
-$ git clone url
+$ git clone https://github.com/athulreji/moodle-attedance.git
 ```
 
 This will clone the latest version of the repository to a **moodle-attendance** folder.
 
 ### Downloading The Repository Zip File
-Another way is to download a zip copy of the repository from the [main branch on GitHub](moodle-attendance.zip).
+Another way is to download a zip copy of the repository from the [main branch on GitHub](https://github.com/athulreji/moodle-attedance/archive/refs/heads/main.zip).
 
 ## Configuring Code
 Edit the **login_values.py** file by filling the login details and the domain address like given below:
