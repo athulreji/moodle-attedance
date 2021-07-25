@@ -17,13 +17,14 @@ login_data['logintoken'] = soup.find('input', attrs={'name': 'logintoken'})['val
 res = s.post('https://' + domain + '/login/index.php', data=login_data)
 if res.status_code==200:
     print("login successful :)\n")
-    data_count=0
     while(True):
         #finding available attendances
         res = s.get('https://' + domain + '/calendar/view.php?view=day')
         soup = BeautifulSoup(res.content, 'html5lib')
         l = soup.find_all('div', attrs={'data-type':'event'})
         count=0
+        subs_list = []
+        new_sub_list = []
         data=[]
         for i in l:
             i = str(i)
@@ -32,6 +33,7 @@ if res.status_code==200:
             link = x.find('a',attrs={'class':'card-link'})['href']
             if link.startswith('https://' + domain + '/mod/attendance/view.php?id='):
                 sub['link'] = link
+                new_sub_list.append(link)
                 for j in x.find_all('a'):
                     if j['href'].startswith('https://' + domain + '/course/view.php?id='):
                         sub['name'] = j.text
@@ -44,7 +46,7 @@ if res.status_code==200:
                 data.append(sub)
 
         #printing available attendances
-        if len(data)>data_count:
+        if subs_list!=new_sub_list or subs_list==[]:
             print("\n#####   Today's Attendances    #####\n")
             for i in data:
                 if len(i['name'])>35:
@@ -52,7 +54,8 @@ if res.status_code==200:
                 else:
                     print(i['name'].ljust(35),'\t', i['time'])
             print("\n####################################\n\n\n")
-            data_count = len(data)
+            subs_list = new_sub_list
+            new_sub_list = []
 
         #submitting the attendance
         if count>0:
