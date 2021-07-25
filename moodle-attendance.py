@@ -14,7 +14,7 @@ s = r.Session()
 res = s.get('https://' + domain + '/login/index.php')
 soup = BeautifulSoup(res.content, 'html5lib')
 login_data['logintoken'] = soup.find('input', attrs={'name': 'logintoken'})['value']
-res = s.post(domain + '/login/index.php', data=login_data)
+res = s.post('https://' + domain + '/login/index.php', data=login_data)
 if res.status_code==200:
     print("login successful :)\n")
     data_count=0
