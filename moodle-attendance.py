@@ -17,13 +17,13 @@ login_data['logintoken'] = soup.find('input', attrs={'name': 'logintoken'})['val
 res = s.post('https://' + domain + '/login/index.php', data=login_data)
 if res.status_code==200:
     print("login successful :)\n")
+    subs_list = []
     while(True):
         #finding available attendances
         res = s.get('https://' + domain + '/calendar/view.php?view=day')
         soup = BeautifulSoup(res.content, 'html5lib')
         l = soup.find_all('div', attrs={'data-type':'event'})
         count=0
-        subs_list = []
         new_sub_list = []
         data=[]
         for i in l:
@@ -55,7 +55,6 @@ if res.status_code==200:
                     print(i['name'].ljust(35),'\t', i['time'])
             print("\n####################################\n\n\n")
             subs_list = new_sub_list
-            new_sub_list = []
 
         #submitting the attendance
         if count>0:
