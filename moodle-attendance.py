@@ -19,7 +19,7 @@ if res.status_code==200:
     print("login successful :)\n")
     subs_list = []
     while(True):
-        #finding available attendances
+        # finding available attendances
         res = s.get('https://' + domain + '/calendar/view.php?view=day')
         soup = BeautifulSoup(res.content, 'html5lib')
         l = soup.find_all('div', attrs={'data-type':'event'})
@@ -45,7 +45,7 @@ if res.status_code==200:
                     count+=1
                 data.append(sub)
 
-        #printing available attendances
+        # printing available attendances
         if subs_list!=new_sub_list or subs_list==[]:
             print("\n#####   Today's Attendances    #####\n")
             for i in data:
@@ -56,9 +56,8 @@ if res.status_code==200:
             print("\n####################################\n\n\n")
             subs_list = new_sub_list
 
-        #submitting the attendance
+        # submitting the attendance
         if count>0:
-            time.sleep(100)
             for i in data:
                 if int(i['timestamp'])>time.time():
                     att_data = {
@@ -75,12 +74,12 @@ if res.status_code==200:
                                 x = BeautifulSoup(x.content, 'html5lib')
                                 att_data['status'] = x.find('input', attrs={'name' : 'status'})['value']
                                 att_data['sessid'],att_data['sesskey'] = j['href'].split('sessid=')[1].split('&sesskey=')
-                                #print(att_data)
+                                # print(att_data)
                                 res = s.post('https://' + domain + '/mod/attendance/attendance.php', data=att_data)
                                 if(res.status_code==200):
-                                    print('Submitted attendance of '+ i['name']+'.\n')
+                                    print(':: Submitted attendance of '+ i['name']+'.\n')
                                 else:
-                                    print('Failed to submit attendance of '+ i['name']+'.\n')
+                                    print(':: Failed to submit attendance of '+ i['name']+'.\n')
                         except:
                             pass
 
