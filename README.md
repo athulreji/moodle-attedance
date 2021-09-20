@@ -8,7 +8,7 @@ Make sure you have installed all of the following prerequisites on your machine:
 
 After installing Python install html5lib5, requests and bs4 packages using pip:
 ```bash
-$ pip install requests bs4 html5lib
+$ pip3 install requests bs4 html5lib
 ```
 ## Downloading Code
 There are two ways to download the code:
