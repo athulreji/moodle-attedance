@@ -30,7 +30,7 @@ Edit the **login_values.py** file by filling the login details and the domain ad
 ```python
 username = 'user05@gmail.com'
 
-password = 'pass123'
+password = 'pass234'
 
 domain = 'moodle.example.com'
 ```
