@@ -6,7 +6,7 @@ from login_values import *
 login_data = {
     'anchor' : '',
     'username' : username,
-    'password' : password
+    'password' : password                             #initialising data variables
 }
 
 print('logging in...')
@@ -19,16 +19,16 @@ if res.status_code==200:
     print("login successful :)\n")
     subs_list = []
     while(True):
-        # finding available attendances
-        res = s.get('https://' + domain + '/calendar/view.php?view=day')
+        # finding available attendances 
+        res = s.get('https://' + domain + '/calendar/view.php?view=day')                  #domain
         soup = BeautifulSoup(res.content, 'html5lib')
         l = soup.find_all('div', attrs={'data-type':'event'})
-        count=0
+        count=0                                                            #initialising data variables
         new_sub_list = []
         data=[]
         for i in l:
             i = str(i)
-            x = BeautifulSoup(i, 'html5lib')
+            x = BeautifulSoup(i, 'html5lib')                                        #initialising beautifulsoap
             sub = {}
             link = x.find('a',attrs={'class':'card-link'})['href']
             if link.startswith('https://' + domain + '/mod/attendance/view.php?id='):
